@@ -1,0 +1,41 @@
+:root {
+
+  /* backgrounds */
+  --bg-primary: #000000;
+  --bg-card: #4E3B26;
+
+  /* text */
+  --text-primary: #F9F5EA;
+  --text-secondary: #F0E7DF;
+
+  /* accents */
+  --accent-primary: #F1C627;
+  --accent-secondary: #40A734;
+
+  /* UI */
+  --border-color: #A97855;
+
+}
+
+body {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.bg-image {
+  background-image: url('../images/bg.jpeg');
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+
+
