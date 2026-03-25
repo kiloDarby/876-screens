@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
 
     <!-- Responsive Viewport -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
     <!-- Page Description -->
     <meta name="description" content="Website description here">
@@ -23,26 +24,194 @@
     <link rel="icon" type="image/png" href="images/favicon.png">
 
     <!-- CSS -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/typography.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+
     <img src="./images/bg.jpeg" class="bg-image" alt="">
-    <header>
-        <!-- Navigation -->
-    </header>
 
-    <main>
-        <!-- <img src="./images/bg.jpeg" class="bg-image" alt=""> -->
-        <!-- Main Content -->
-    </main>
+  <!-- <div class="page-wrapper"> -->
+    <div class="page">
 
-    <footer>
-        <!-- Footer Content -->
-    </footer>
+        <header class="header">
+            <nav class="site-nav">
+                <a href="index.html" class="nav-logo">
+                    <img src="images/logo.png" alt="876 Screens Logo">
+                </a>
 
-    <!-- JavaScript -->
-    <script src="js/script.js"></script>
+                <!-- Mobile nav -->
+                <div class="nav-links-mobile">
+                    <a href="#" class="nav-link">Home</a>
+                    <a href="#" class="nav-link">Schedule</a>
+                    <a href="#" class="nav-link">Login</a>
+                    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" type="button">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile dropdown menu -->
+                <div class="menu-overlay"></div>
+                <aside class="mobile-menu" id="mobile-menu">
+                    <button class="menu-close" aria-label="Close menu" type="button">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <nav class="mobile-menu-links">
+                        <a href="#">Register</a>
+                        <a href="#">About Us</a>
+                        <a href="#">Contact Us</a>
+                    </nav>
+                </aside>
+
+                <!-- Desktop left -->
+                <div class="nav-links-desktop nav-left">
+                    <a href="#" class="nav-link">Home</a>
+                    <a href="#" class="nav-link">Schedule</a>
+                </div>
+
+                <!-- Desktop right -->
+                <div class="nav-links-desktop nav-right">
+                    <a href="#" class="nav-link">Login</a>
+                    <a href="#" class="nav-link">Register</a>
+                </div>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <div class="carousel">
+                <button class="carousel-btn carousel-btn--left" aria-label="Previous slide">‹</button>
+
+                <div class="carousel-track">
+                <article class="movie-slide">
+                    <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1400&auto=format&fit=crop" alt="Movie poster 1">
+                    <div class="movie-overlay">
+                    <p class="movie-tag">Now Showing</p>
+                    <h1 class="movie-title">The Dark Reign</h1>
+                    <p class="movie-meta">Action • 2h 08m • PG-13</p>
+                    <a href="#" class="btn-primary movie-btn">Buy Ticket</a>
+                    </div>
+                </article>
+
+                <article class="movie-slide">
+                    <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=1400&auto=format&fit=crop" alt="Movie poster 2">
+                    <div class="movie-overlay">
+                    <p class="movie-tag">This Week</p>
+                    <h1 class="movie-title">Crimson Night</h1>
+                    <p class="movie-meta">Thriller • 1h 54m • 16+</p>
+                    <a href="#" class="btn-primary movie-btn">Buy Ticket</a>
+                    </div>
+                </article>
+
+                <article class="movie-slide">
+                    <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=1400&auto=format&fit=crop" alt="Movie poster 3">
+                    <div class="movie-overlay">
+                    <p class="movie-tag">Coming Soon</p>
+                    <h1 class="movie-title">Echoes of Fire</h1>
+                    <p class="movie-meta">Drama • 2h 12m • PG</p>
+                    <a href="#" class="btn-primary movie-btn">Buy Ticket</a>
+                    </div>
+                </article>
+                </div>
+
+                <button class="carousel-btn carousel-btn--right" aria-label="Next slide">›</button>
+            </div>
+        </section>
+
+        <section class="now-showing">
+            <div class="section-title">
+                <h2>Now Showing</h2>
+                <span class="line"></span>
+            </div>
+
+            <div class="movie-grid">
+                <article class="movie-card"></article>
+                <article class="movie-card"></article>
+                <article class="movie-card"></article>
+                <article class="movie-card"></article>
+                <article class="movie-card"></article>
+                <article class="movie-card"></article>
+                
+            </div>
+        </section>
+        
+        <section class="coming-soon">
+            <div class="section-title">
+                <h2>Coming Soon</h2>
+                <span class="line"></span>
+            </div>
+
+            <div class="carousel">
+                <button class="carousel-btn carousel-btn--left" aria-label="Previous slide">‹</button>
+
+                <div class="carousel-track">
+                <article class="movie-slide">
+                    <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1400&auto=format&fit=crop" alt="Movie poster 1">
+                    <div class="movie-overlay">
+                    <p class="movie-tag">Now Showing</p>
+                    <h1 class="movie-title">The Dark Reign</h1>
+                    <p class="movie-meta">Action • 2h 08m • PG-13</p>
+                    <a href="#" class="btn-primary movie-btn">Buy Ticket</a>
+                    </div>
+                </article>
+
+                <article class="movie-slide">
+                    <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=1400&auto=format&fit=crop" alt="Movie poster 2">
+                    <div class="movie-overlay">
+                    <p class="movie-tag">This Week</p>
+                    <h1 class="movie-title">Crimson Night</h1>
+                    <p class="movie-meta">Thriller • 1h 54m • 16+</p>
+                    <a href="#" class="btn-primary movie-btn">Buy Ticket</a>
+                    </div>
+                </article>
+
+                <article class="movie-slide">
+                    <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=1400&auto=format&fit=crop" alt="Movie poster 3">
+                    <div class="movie-overlay">
+                    <p class="movie-tag">Coming Soon</p>
+                    <h1 class="movie-title">Echoes of Fire</h1>
+                    <p class="movie-meta">Drama • 2h 12m • PG</p>
+                    <a href="#" class="btn-primary movie-btn">Buy Ticket</a>
+                    </div>
+                </article>
+                </div>
+
+                <button class="carousel-btn carousel-btn--right" aria-label="Next slide">›</button>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-container">
+
+                <!-- Social Icons -->
+                <div class="footer-socials">
+                <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+
+                <!-- Links -->
+                <div class="footer-links">
+                <a href="#">Contact Us</a>
+                <a href="#">About Us</a>
+                </div>
+
+            </div>
+
+            <!-- Bottom Text -->
+            <p class="footer-copy">
+                © 2026 876 Screens. All Rights Reserved.
+            </p>
+        </footer>
+    </div>
+  <!-- </div> -->
+
+  <script src="js/script.js"></script>
 
 </body>
+
+
 </html>
