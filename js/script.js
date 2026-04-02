@@ -23,8 +23,6 @@ menuOverlay.addEventListener("click", closeMenu);
 
 
 
-
-
 const carousels = document.querySelectorAll(".carousel");
 
 carousels.forEach((carousel) => {
@@ -76,3 +74,49 @@ carousels.forEach((carousel) => {
   goToSlide(0);
   startAutoPlay();
 });
+
+
+
+const modal = document.getElementById("trailerModal");
+  const modalBackdrop = modal.querySelector(".trailer-modal__backdrop");
+  const closeModalBtn = document.getElementById("closeTrailerModal");
+  const trailerFrame = document.getElementById("trailerFrame");
+  const modalTitle = document.getElementById("trailerModalTitle");
+  const trailerButtons = document.querySelectorAll(".watch-trailer-btn");
+
+  function openTrailerModal(trailerUrl, title = "Movie Trailer") {
+    console.log('working')
+    trailerFrame.src = `${trailerUrl}?autoplay=1&mute=1&playsinline=1&rel=0`;
+    trailerFrame.title = title;
+    modalTitle.textContent = title;
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeTrailerModal() {
+    trailerFrame.src = "";
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  trailerButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const trailerUrl = button.dataset.trailer;
+      const title = button.dataset.title || "Movie Trailer";
+
+      if (trailerUrl) {
+        openTrailerModal(trailerUrl, title);
+      }
+    });
+  });
+
+  closeModalBtn.addEventListener("click", closeTrailerModal);
+  modalBackdrop.addEventListener("click", closeTrailerModal);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal.classList.contains("active")) {
+      closeTrailerModal();
+    }
+  });
