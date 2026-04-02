@@ -102,7 +102,8 @@ const modal = document.getElementById("trailerModal");
   }
 
   trailerButtons.forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (e) => {
+      e.preventDefault()
       const trailerUrl = button.dataset.trailer;
       const title = button.dataset.title || "Movie Trailer";
 
@@ -119,4 +120,129 @@ const modal = document.getElementById("trailerModal");
     if (event.key === "Escape" && modal.classList.contains("active")) {
       closeTrailerModal();
     }
+  });
+
+
+//-------------------------------------------------------------------------------
+  const bookingModal = document.getElementById("bookingModal");
+  const closeBookingModal = document.getElementById("closeBookingModal");
+
+  const bookingPoster = document.getElementById("bookingPoster");
+  const bookingRating = document.getElementById("bookingRating");
+  const bookingTitle = document.getElementById("bookingModalTitle");
+  const bookingMeta = document.getElementById("bookingMeta");
+  const bookingDescription = document.getElementById("bookingDescription");
+  const bookingCinema = document.getElementById("bookingCinema");
+  const bookingDate = document.getElementById("bookingDate");
+  const bookingShowtime = document.getElementById("bookingShowtime");
+  const bookingFormat = document.getElementById("bookingFormat");
+
+  const adultQty = document.getElementById("adultQty");
+  const childQty = document.getElementById("childQty");
+
+  const adultPriceLabel = document.getElementById("adultPriceLabel");
+  const childPriceLabel = document.getElementById("childPriceLabel");
+
+  const adultTotalText = document.getElementById("adultTotalText");
+  const adultTotalAmount = document.getElementById("adultTotalAmount");
+  const childTotalText = document.getElementById("childTotalText");
+  const childTotalAmount = document.getElementById("childTotalAmount");
+  const grandTotal = document.getElementById("grandTotal");
+
+  let adultPrice = 1500;
+  let childPrice = 1000;
+
+  function formatJMD(value) {
+    return `JMD $${Number(value).toLocaleString()}`;
+  }
+
+  function updateTotals() {
+    const adultCount = Number(adultQty.value) || 0;
+    const childCount = Number(childQty.value) || 0;
+
+    const adultTotal = adultCount * adultPrice;
+    const childTotal = childCount * childPrice;
+    const total = adultTotal + childTotal;
+
+    adultTotalText.textContent = `Adult x ${adultCount}`;
+    adultTotalAmount.textContent = formatJMD(adultTotal);
+
+    childTotalText.textContent = `Child x ${childCount}`;
+    childTotalAmount.textContent = formatJMD(childTotal);
+
+    grandTotal.textContent = formatJMD(total);
+  }
+
+  function openBookingModal(trigger) {
+    adultPrice = Number(trigger.dataset.adultPrice) || 1500;
+    childPrice = Number(trigger.dataset.childPrice) || 1000;
+
+    bookingPoster.src = trigger.dataset.poster || bookingPoster.src;
+    bookingPoster.alt = `${trigger.dataset.title || "Movie"} Poster`;
+
+    bookingRating.textContent = trigger.dataset.rating || "PG-13";
+    bookingTitle.textContent = trigger.dataset.title || "Movie Title";
+    bookingMeta.textContent = trigger.dataset.meta || "Genre • Duration";
+    bookingDescription.textContent = trigger.dataset.description || "Movie description goes here.";
+    bookingCinema.textContent = trigger.dataset.cinema || "Cinema 7";
+    bookingDate.textContent = trigger.dataset.date || "Friday, April 10";
+    bookingShowtime.textContent = trigger.dataset.showtime || "7:30 PM";
+    bookingFormat.textContent = trigger.dataset.format || "2D Digital";
+
+    adultPriceLabel.textContent = `${formatJMD(adultPrice)} each`;
+    childPriceLabel.textContent = `${formatJMD(childPrice)} each`;
+
+    adultQty.value = 1;
+    childQty.value = 0;
+    updateTotals();
+
+    bookingModal.classList.add("active");
+    bookingModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    bookingModal.classList.remove("active");
+    bookingModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  document.querySelectorAll(".buy-ticket").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      openBookingModal(link);
+    });
+  });
+
+  closeBookingModal.addEventListener("click", closeModal);
+
+  bookingModal.querySelector(".booking-modal__backdrop").addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && bookingModal.classList.contains("active")) {
+      closeModal();
+    }
+  });
+
+  document.querySelectorAll(".qty-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.target;
+      const action = button.dataset.action;
+      const input = document.getElementById(targetId);
+
+      let value = Number(input.value) || 0;
+
+      if (action === "increase") value += 1;
+      if (action === "decrease") value = Math.max(0, value - 1);
+
+      input.value = value;
+      updateTotals();
+    });
+  });
+
+  [adultQty, childQty].forEach((input) => {
+    input.addEventListener("input", () => {
+      input.value = Math.max(0, Number(input.value) || 0);
+      updateTotals();
+    });
   });
