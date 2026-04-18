@@ -161,7 +161,7 @@ The system includes three main roles:
 
 ### 1. Clone the Repository
 
-git clone https://github.com/yourusername/876-screens.git
+git clone https://github.com/kiloDarby/876-screens.git
 
 
 ### 2. Move to Local Server
