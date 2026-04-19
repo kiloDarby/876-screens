@@ -4,6 +4,7 @@
   require_once __DIR__ . '/../app/handlers/homepage_handler.php';
 
   $featuredMovies = getHomePageData($pdo)['featuredMovies'];
+  $currentUser = currentUser();
   $isLoggedIn = isLoggedIn();
 
   $errors = getFlashErrors();
@@ -88,7 +89,7 @@
                                 <div class="movie-cell">
                                   <div class="movie-thumb">
                                     <img
-                                      src="<?= $basePath . htmlspecialchars($movie['image_url']); ?>"
+                                      src="<?= url('/app/' . $movie['image_url']); ?>"
                                       alt="Poster for <?php echo htmlspecialchars($movie['title']); ?>"
                                     >
                                   </div>

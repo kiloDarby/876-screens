@@ -234,7 +234,7 @@ function initBookingModal() {
     adultPrice = Number(trigger.dataset.adultPrice) || 1500;
     childPrice = Number(trigger.dataset.childPrice) || 1000;
 
-    bookingPoster.src = '../' + trigger.dataset.poster || bookingPoster.src;
+    bookingPoster.src = trigger.dataset.poster || bookingPoster.src;
     bookingPoster.alt = `${trigger.dataset.title || "Movie"} Poster`;
 
     bookingRating.textContent = trigger.dataset.rating || "PG-13";
@@ -390,34 +390,26 @@ function initBookingSuccessModal() {
 // This section validates the booking form before confirming.
 // ============================================================
 const bookingForm = document.getElementById("bookingForm");
-
-bookingForm?.addEventListener("submit", (event) => {
+bookingForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const fullName = document.getElementById("fullName")?.value.trim() || "";
   const email = document.getElementById("email")?.value.trim() || "";
   const phone = document.getElementById("phone")?.value.trim() || "";
-
   const adultCount = Number(document.getElementById("adultQty")?.value || 0);
   const childCount = Number(document.getElementById("childQty")?.value || 0);
+  const movieTitle = document.getElementById("bookingModalTitle")?.textContent.trim() || "Movie";
+  const bookingDateSelect = document.getElementById("bookingDate");
+  const bookingCinemaSelect = document.getElementById("bookingCinema");
+  const bookingShowtimeSelect = document.getElementById("bookingShowtime");
+  const selectedDate = bookingDateSelect?.selectedOptions[0]?.textContent.trim() || "";
+  const selectedCinema = bookingCinemaSelect?.selectedOptions[0]?.textContent.trim() || "";
+  const selectedShowtime = bookingShowtimeSelect?.selectedOptions[0]?.textContent.trim() || "";
+  const showtimeId = bookingShowtimeSelect?.value || "";
+  const total = document.getElementById("grandTotal")?.textContent.trim() || "JMD $0";
 
-  const movieTitle =
-    document.getElementById("bookingModalTitle")?.textContent.trim() || "Movie";
-
-  const selectedDate =
-    document.getElementById("bookingDate")?.selectedOptions[0]?.textContent.trim() || "";
-
-  const selectedCinema =
-    document.getElementById("bookingCinema")?.selectedOptions[0]?.textContent.trim() || "";
-
-  const selectedShowtime =
-    document.getElementById("bookingShowtime")?.selectedOptions[0]?.textContent.trim() || "";
-
-  const total =
-    document.getElementById("grandTotal")?.textContent.trim() || "JMD $0";
-
-  // Basic validation checks
-  if (!fullName) {
+  // Simple validation checks
+  if ( ! fullName) {
     alert("Full name is missing.");
     return;
   }
@@ -437,12 +429,11 @@ bookingForm?.addEventListener("submit", (event) => {
     return;
   }
 
-  if (!selectedDate || !selectedCinema || !selectedShowtime) {
+  if (!selectedDate || !selectedCinema || !selectedShowtime || !showtimeId) {
     alert("Please select a date, cinema, and showtime.");
     return;
   }
 
-  // Ask user to confirm booking
   const confirmed = window.confirm(
     `Proceed with booking for ${movieTitle}?\n\nTotal: ${total}`
   );
@@ -451,26 +442,55 @@ bookingForm?.addEventListener("submit", (event) => {
     return;
   }
 
-  const bookingModal = document.getElementById("bookingModal");
+  try {
+    const response = await fetch(`${BASE_URL}/public/book_ticket.php`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        full_name: fullName,
+        email,
+        phone,
+        showtime_id: showtimeId,
+        adult_quantity: adultCount,
+        child_quantity: childCount
+      })
+    });
 
-  if (bookingModal) {
-    bookingModal.classList.remove("active");
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      alert(result.message || "Something went wrong while booking the ticket.");
+      return;
+    }
+
+    const bookingModal = document.getElementById("bookingModal");
+
+    if (bookingModal) {
+      bookingModal.classList.remove("active");
+    }
+
+    const successData = {
+      reference: result.ticket_reference,
+      movieTitle,
+      date: selectedDate,
+      cinema: selectedCinema,
+      showtime: selectedShowtime,
+      adultQty: adultCount,
+      childQty: childCount,
+      total,
+      email
+    };
+
+    openBookingSuccessModal(successData);
+
+    bookingForm.reset();
+
+  } catch (error) {
+    alert("Unable to complete booking right now. Please try again.");
+    console.error("Booking error:", error);
   }
-
-  // Prepare success data
-  const successData = {
-    reference: generateTicketReference(),
-    movieTitle,
-    date: selectedDate,
-    cinema: selectedCinema,
-    showtime: selectedShowtime,
-    adultQty: adultCount,
-    childQty: childCount,
-    total,
-    email
-  };
-
-  openBookingSuccessModal(successData);
 });
 
 initBookingSuccessModal();
@@ -654,7 +674,6 @@ bookingShowtime?.addEventListener("change", () => {
 /* =========================
    BUY BUTTON CLICK
 ========================= */
-
 // When buy ticket button is clicked
 document?.querySelectorAll(".buy-ticket").forEach(btn => {
   btn.addEventListener("click", async (e) => {
@@ -669,7 +688,7 @@ document?.querySelectorAll(".buy-ticket").forEach(btn => {
     const movieId = btn.dataset.movieId;
 
     // Fill movie details in modal
-    document.getElementById("bookingPoster").src = '../' + btn.dataset.poster;
+    document.getElementById("bookingPoster").src = btn.dataset.poster;
     document.getElementById("bookingModalTitle").textContent = btn.dataset.title;
     document.getElementById("bookingRating").textContent = btn.dataset.rating;
     document.getElementById("bookingMeta").textContent = btn.dataset.meta;
@@ -1076,7 +1095,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Do you want to continue?"
       );
 
-      if (!confirmed) {
+      if ( ! confirmed) {
         e.preventDefault(); // stop form submission if user cancels
       }
     }
@@ -1092,7 +1111,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener('DOMContentLoaded', () => {
   const contactForm = document.querySelector('.contact-form');
 
-  if (!contactForm) return;
+  if ( ! contactForm) return;
 
   contactForm.addEventListener('submit', (e) => {
     e.preventDefault(); // stop page reload

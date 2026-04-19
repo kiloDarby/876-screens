@@ -11,6 +11,7 @@
     $success = getFlashSuccess();
 
     $featuredMovies = getHomePageData($pdo)['featuredMovies']; //Fetch featured movies (used in hero section)
+    $currentUser = currentUser();
     $isLoggedIn = isLoggedIn();
 
     //Retrieve previously entered form values (for repopulating form on error)

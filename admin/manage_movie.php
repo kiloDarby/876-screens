@@ -4,6 +4,7 @@
   require_once __DIR__ . '/../app/handlers/homepage_handler.php';
 
   $featuredMovies = getHomePageData($pdo)['featuredMovies'];
+  $currentUser = currentUser();
   $isLoggedIn = isLoggedIn();
 
   $pageTitle = $isEditMode ? '876 Screens - Edit Movie' : '876 Screens - Create Movie';
@@ -66,7 +67,7 @@
                           <label for="moviePoster" class="poster-upload-box <?= $hasPoster ? 'has-poster' : ''; ?>">
                             <?php if ($hasPoster): ?>
                               <img
-                                src="../<?= htmlspecialchars($currentPoster); ?>"
+                                src="<?= url('/app/' . $currentPoster); ?>"
                                 alt="Current poster for <?= htmlspecialchars($formMovie['title'] ?? 'movie'); ?>"
                                 class="poster-preview-image"
                               >
@@ -280,13 +281,38 @@
 
                     <!-- ACTIONS -->
                     <div class="movie-admin-actions">
-                      <button type="button" class="btn btn-tertiary" onclick="window.location.href='./manage_movies.php'">
+
+                      <!-- Cancel -->
+                      <button 
+                        type="button" 
+                        class="btn btn-tertiary" 
+                        onclick="window.location.href='<?= url('/admin/manage_movies.php'); ?>'">
                         Cancel
                       </button>
 
-                      <button type="submit" class="btn btn-secondary">
+                      <?php if ($isEditMode): ?>
+                        <!-- Delete -->
+                        <button 
+                          type="submit"
+                          name="action"
+                          value="delete"
+                          class="btn btn-danger delete-all-btn"
+                          onclick="return confirm('Are you sure you want to delete this movie? This is a permanent action and cannot be undone.');"
+                        >
+                          Delete Movie
+                        </button>
+                      <?php endif; ?>
+
+                      <!-- Save -->
+                      <button 
+                        type="submit" 
+                        name="action"
+                        value="save"
+                        class="btn btn-secondary"
+                      >
                         <?= $isEditMode ? 'Update Movie' : 'Create Movie'; ?>
                       </button>
+
                     </div>
 
                   </form>

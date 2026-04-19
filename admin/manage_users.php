@@ -8,6 +8,7 @@
     require_once __DIR__ . '/../app/handlers/homepage_handler.php';
 
     $featuredMovies = getHomePageData($pdo)['featuredMovies'];
+    $currentUser = currentUser();
     $isLoggedIn = isLoggedIn();
 
     $pageTitle = '876 Screens - Manage Users';

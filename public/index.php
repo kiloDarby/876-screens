@@ -54,7 +54,7 @@
                                     <img
                                         width="248"
                                         height="380"
-                                        src="../<?= htmlspecialchars($movie['image_url']) ?>"
+                                        src="<?= url('/app/' . $movie['image_url']); ?>"
                                         alt="<?= htmlspecialchars($movie['title']) ?>"
                                     >
                                 </div>
@@ -89,7 +89,7 @@
                                                 data-rating="<?= htmlspecialchars($movie['rating_code']) ?>"
                                                 data-meta="<?= htmlspecialchars(formatMovieMeta($movie)) ?>"
                                                 data-description="<?= htmlspecialchars($movie['description']) ?>"
-                                                data-poster="<?= htmlspecialchars($movie['image_url'] ?: '../assets/images/placeholders/movie-poster.jpg') ?>"
+                                                data-poster="<?= url('/app/' . $movie['image_url']); ?>"
                                             >
                                                 Buy Ticket
                                             </a>
@@ -116,14 +116,16 @@
                 </div>
 
                 <div class="carousel">
-                    <button class="carousel-btn carousel-btn--left" title="Previous slide">‹</button>
+                    <?php if (!empty($comingSoonMovies)): ?>
+                        <button class="carousel-btn carousel-btn--left" title="Previous slide">‹</button>
+                    <?php endif; ?>
 
                     <div class="carousel-track">
                         <?php if (!empty($comingSoonMovies)): ?>
                             <?php foreach ($comingSoonMovies as $movie): ?>
                                 <article class="movie-slide">
                                     <img
-                                        src="<?= '../' . htmlspecialchars($movie['image_url']) ?>"
+                                        src="<?= url('/app/' . $movie['image_url']); ?>"
                                         alt="<?= htmlspecialchars($movie['title']) ?>"
                                     >
 
@@ -140,7 +142,7 @@
                                         <?php if (!empty($movie['trailer_url'])): ?>
                                             <a
                                                 href="#"
-                                                class="btn btn-primary movie-btn watch-trailer-btn"
+                                                class="btn btn-tertiary  movie-btn watch-trailer-btn"
                                                 data-trailer="<?= htmlspecialchars($movie['trailer_url']) ?>"
                                                 data-title="<?= htmlspecialchars($movie['title']) ?> Trailer"
                                             >
@@ -153,7 +155,7 @@
                         <?php else: ?>
                             <article class="movie-slide">
                                 <img
-                                    src="../assets/images/hero-banner.jpg"
+                                    src="<?= url('/assets/images/hero-banner.jpg'); ?>"
                                     alt="Coming soon"
                                 >
 
@@ -166,7 +168,9 @@
                         <?php endif; ?>
                     </div>
 
-                    <button class="carousel-btn carousel-btn--right" title="Next slide">›</button>
+                    <?php if (!empty($comingSoonMovies)): ?>
+                        <button class="carousel-btn carousel-btn--right" title="Next slide">›</button>
+                    <?php endif; ?>
                 </div>
             </section>
 

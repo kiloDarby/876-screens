@@ -250,38 +250,6 @@ try {
 }
 
 /**
- * Convert minutes into readable format (e.g. 2h 15m)
- */
-function formatMovieDuration($minutes) {
-    if ($minutes <= 0) {
-        return 'N/A';
-    }
-
-    $hours = floor($minutes / 60);
-    $remainingMinutes = $minutes % 60;
-
-    if ($hours > 0) {
-        return sprintf('%dh %02dm', $hours, $remainingMinutes);
-    }
-
-    return sprintf('%dm', $remainingMinutes);
-}
-
-/**
- * Converts time into 12-hour format (e.g. 2:30 PM).
- * If the time is invalid, it returns the original value.
- */
-function formatShowtimeForDisplay($time) {
-    $timestamp = strtotime($time);
-
-    if ($timestamp === false) {
-        return $time;
-    }
-
-    return date('g:i A', $timestamp);
-}
-
-/**
  * Determine movie status based on showtimes
  */
 function getMovieStatus($showtimes) {
@@ -332,4 +300,36 @@ function getMovieStatusLabel($showtimes) {
         'coming_soon' => 'Coming Soon',
         default => 'Archived',
     };
+}
+
+/**
+ * Convert minutes into readable format (e.g. 2h 15m)
+ */
+function formatMovieDuration($minutes) {
+    if ($minutes <= 0) {
+        return 'N/A';
+    }
+
+    $hours = floor($minutes / 60);
+    $remainingMinutes = $minutes % 60;
+
+    if ($hours > 0) {
+        return sprintf('%dh %02dm', $hours, $remainingMinutes);
+    }
+
+    return sprintf('%dm', $remainingMinutes);
+}
+
+/**
+ * Converts time into 12-hour format (e.g. 2:30 PM).
+ * If the time is invalid, it returns the original value.
+ */
+function formatShowtimeForDisplay($time) {
+    $timestamp = strtotime($time);
+
+    if ($timestamp === false) {
+        return $time;
+    }
+
+    return date('g:i A', $timestamp);
 }

@@ -7,7 +7,7 @@
                 <?php foreach ($featuredMovies as $movie): ?>
                     <article class="movie-slide">
                         <img
-                            src="<?= '../' . htmlspecialchars($movie['image_url']) ?>"
+                            src="<?= url('/app/' . $movie['image_url']); ?>"
                             alt="<?= htmlspecialchars($movie['title']) ?>"
                         >
 
@@ -42,7 +42,7 @@
                                         data-rating="<?= htmlspecialchars($movie['rating_code']) ?>"
                                         data-meta="<?= htmlspecialchars(formatMovieMeta($movie)) ?>"
                                         data-description="<?= htmlspecialchars($movie['description']) ?>"
-                                        data-poster="<?= htmlspecialchars($movie['image_url'] ?: '../assets/images/placeholders/movie-poster.jpg') ?>"
+                                        data-poster="<?= url('/app/' . $movie['image_url']); ?>"
                                     >
                                         Buy Ticket
                                     </a>

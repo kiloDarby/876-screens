@@ -58,6 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'save') {
         handleSaveMovie($pdo, $cinemas);
     }
+
+    if ($action === 'delete') {
+        handleDeleteMovie($pdo);
+    }
 }
 
 $formMovie = buildFormMovieData($oldInput, $movie); // Build the final form data to display on the page
@@ -260,6 +264,98 @@ function handleSaveMovie($pdo, $cinemas) {
             $redirectUrl .= '?id=' . $movieId;
         }
         header('Location: ' . url($redirectUrl));
+        exit;
+    }
+}
+
+
+/**
+ * Handle deleting a movie.
+ * This function is responsible for removing a movie from the database.
+ *
+ * Main responsibilities:
+ * - Validate the movie ID from the form submission
+ * - Ensure the movie exists before attempting deletion
+ * - Prevent deletion if the movie still has scheduled showtimes
+ * - Prevent deletion if tickets already exist for the movie's showtimes
+ * - Delete the movie record from the database if all conditions are met
+ * - Set appropriate success or error messages using session flash data
+ * - Redirect the user to the Manage Movies page after the operation
+ */
+function handleDeleteMovie($pdo) {
+    $movieId = isset($_POST['movie_id']) ? (int) $_POST['movie_id'] : 0;
+
+    if ($movieId <= 0) {
+        $_SESSION['errors'] = ['Invalid movie selected for deletion.'];
+        header('Location: ' . url('/admin/manage_movies.php'));
+        exit;
+    }
+
+    try {
+        // Check if movie exists
+        $movie = fetchMovieById($pdo, $movieId);
+
+        if (!$movie) {
+            $_SESSION['errors'] = ['Movie not found.'];
+            header('Location: ' . url('/admin/manage_movies.php'));
+            exit;
+        }
+
+        // Prevent delete if tickets exist for any showtime of this movie
+        $ticketStmt = $pdo->prepare("
+            SELECT COUNT(*)
+            FROM ticket t
+            INNER JOIN showtime s
+                ON s.showtime_id = t.showtime_id
+            WHERE s.movie_id = ?
+            AND (
+                    s.show_date > CURDATE()
+                OR (s.show_date = CURDATE() AND s.start_time >= CURTIME())
+            )
+        ");
+        $ticketStmt->execute([$movieId]);
+        $ticketCount = (int) $ticketStmt->fetchColumn();
+
+        if ($ticketCount > 0) {
+            $_SESSION['errors'] = [
+                'This movie cannot be deleted because tickets have already been booked for it.'
+            ];
+            header('Location: ' . url('/admin/manage_movies.php'));
+            exit;
+        }
+
+        // Prevent delete if showtimes exist
+        $stmt = $pdo->prepare("
+            SELECT COUNT(*) 
+            FROM showtime 
+            WHERE movie_id = ?
+        ");
+        $stmt->execute([$movieId]);
+
+        $showtimeCount = (int) $stmt->fetchColumn();
+
+        if ($showtimeCount > 0) {
+            $_SESSION['errors'] = [
+                'This movie cannot be deleted because it still has scheduled showtimes.'
+            ];
+            header('Location: ' . url('/admin/manage_movies.php'));
+            exit;
+        }
+
+        // Delete movie
+        $deleteStmt = $pdo->prepare("
+            DELETE FROM movie 
+            WHERE movie_id = ?
+        ");
+        $deleteStmt->execute([$movieId]);
+
+        $_SESSION['success'] = 'Movie deleted successfully.';
+        header('Location: ' . url('/admin/manage_movies.php'));
+        exit;
+
+    } catch (Throwable $e) {
+        $_SESSION['errors'] = ['Something went wrong while deleting the movie.'];
+        header('Location: ' . url('/admin/manage_movies.php'));
         exit;
     }
 }

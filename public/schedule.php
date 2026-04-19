@@ -52,7 +52,7 @@
                                     <?php if (!empty($pageData['previous_month'])): ?>
                                         <a
                                             class="calendar-nav"
-                                            href="?month=<?php echo urlencode($pageData['previous_month']); ?>&date=<?php echo urlencode($pageData['selected_date']); ?>&cinema=<?php echo (int) $pageData['selected_cinema_id']; ?>"
+                                            href="?month=<?= urlencode($pageData['previous_month']); ?>&date=<?= urlencode($pageData['selected_date']); ?>&cinema=<?= (int) $pageData['selected_cinema_id']; ?>"
                                             title="Previous month"
                                         >
                                             <i class="fa-solid fa-chevron-left"></i>
@@ -63,11 +63,11 @@
                                         </span>
                                     <?php endif; ?>
 
-                                    <h3><?php echo htmlspecialchars($pageData['month_label']); ?></h3>
+                                    <h3><?= htmlspecialchars($pageData['month_label']); ?></h3>
 
                                     <a
                                         class="calendar-nav"
-                                        href="?month=<?php echo urlencode($pageData['next_month']); ?>&date=<?php echo urlencode($pageData['selected_date']); ?>&cinema=<?php echo (int) $pageData['selected_cinema_id']; ?>"
+                                        href="?month=<?= urlencode($pageData['next_month']); ?>&date=<?= urlencode($pageData['selected_date']); ?>&cinema=<?= (int) $pageData['selected_cinema_id']; ?>"
                                         title="Next month"
                                     >
                                         <i class="fa-solid fa-chevron-right"></i>
@@ -110,11 +110,11 @@
                                         ?>
 
                                         <a
-                                            href="<?php echo $dayUrl; ?>"
-                                            class="<?php echo implode(' ', $dayClasses); ?>"
-                                            title="<?php echo htmlspecialchars($day['date']); ?>"
+                                            href="<?= $dayUrl; ?>"
+                                            class="<?= implode(' ', $dayClasses); ?>"
+                                            title="<?= htmlspecialchars($day['date']); ?>"
                                         >
-                                            <?php echo htmlspecialchars($day['day_number']); ?>
+                                            <?= htmlspecialchars($day['day_number']); ?>
                                         </a>
                                     <?php endforeach; ?>
                                 </div>
@@ -124,25 +124,25 @@
                             <div class="schedule-panel">
                                 <div class="schedule-panel-top">
                                     <div>
-                                        <h3><?php echo htmlspecialchars($pageData['selected_heading']); ?></h3>
+                                        <h3><?= htmlspecialchars($pageData['selected_heading']); ?></h3>
                                     </div>
 
                                     <form method="GET" class="schedule-filter">
-                                        <input type="hidden" name="month" value="<?php echo htmlspecialchars($pageData['selected_month']); ?>">
-                                        <input type="hidden" name="date" value="<?php echo htmlspecialchars($pageData['selected_date']); ?>">
+                                        <input type="hidden" name="month" value="<?= htmlspecialchars($pageData['selected_month']); ?>">
+                                        <input type="hidden" name="date" value="<?= htmlspecialchars($pageData['selected_date']); ?>">
 
                                         <label for="cinema-filter">Filter by cinema:</label>
                                         <select id="cinema-filter" name="cinema" onchange="this.form.submit()">
-                                            <option value="0" <?php echo (int) $pageData['selected_cinema_id'] === 0 ? 'selected' : ''; ?>>
+                                            <option value="0" <?= (int) $pageData['selected_cinema_id'] === 0 ? 'selected' : ''; ?>>
                                                 All Cinemas
                                             </option>
 
                                             <?php foreach ($pageData['cinema_options'] as $cinema): ?>
                                                 <option
-                                                    value="<?php echo (int) $cinema['cinema_id']; ?>"
-                                                    <?php echo (int) $pageData['selected_cinema_id'] === (int) $cinema['cinema_id'] ? 'selected' : ''; ?>
+                                                    value="<?= (int) $cinema['cinema_id']; ?>"
+                                                    <?= (int) $pageData['selected_cinema_id'] === (int) $cinema['cinema_id'] ? 'selected' : ''; ?>
                                                 >
-                                                    <?php echo htmlspecialchars($cinema['cinema_name']); ?>
+                                                    <?= htmlspecialchars($cinema['cinema_name']); ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
@@ -169,18 +169,18 @@
                                                     <img
                                                         width="248"
                                                         height="380"
-                                                        src="<?php echo '../' . htmlspecialchars($item['image_url']); ?>"
-                                                        alt="<?php echo htmlspecialchars($item['title']); ?> poster"
+                                                        src="<?= url('/app/' . $movie['image_url']); ?>"
+                                                        alt="<?= htmlspecialchars($item['title']); ?> poster"
                                                     >
                                                 </div>
 
                                                 <div class="schedule-card-body">
-                                                    <h4><?php echo htmlspecialchars($item['title']); ?></h4>
+                                                    <h4><?= htmlspecialchars($item['title']); ?></h4>
 
                                                     <p class="schedule-card-meta movie-rating-text">
-                                                        <?php echo htmlspecialchars($item['rating_code']); ?>
-                                                        • <?php echo htmlspecialchars($item['duration']); ?>
-                                                        • <?php echo htmlspecialchars($item['cinema_label']); ?>
+                                                        <?= htmlspecialchars($item['rating_code']); ?>
+                                                        • <?= htmlspecialchars($item['duration']); ?>
+                                                        • <?= htmlspecialchars($item['cinema_label']); ?>
                                                     </p>
 
                                                     <div class="schedule-card-times">
@@ -191,7 +191,7 @@
                                                                 <span
                                                                     class="time-chip"
                                                                 >
-                                                                    <?php echo htmlspecialchars($showtime['display_time']); ?>
+                                                                    <?= htmlspecialchars($showtime['display_time']); ?>
                                                             </span>
                                                             <?php endforeach; ?>
                                                         </div>
@@ -201,8 +201,8 @@
                                                         <?php if (!empty($item['trailer_url'])): ?>
                                                             <button
                                                                 class="btn btn-tertiary watch-trailer-btn"
-                                                                data-trailer="<?php echo htmlspecialchars($item['trailer_url']); ?>"
-                                                                data-title="<?php echo htmlspecialchars($item['title']); ?> Trailer"
+                                                                data-trailer="<?= htmlspecialchars($item['trailer_url']); ?>"
+                                                                data-title="<?= htmlspecialchars($item['title']); ?> Trailer"
                                                                 type="button"
                                                             >
                                                                 <i class="fa-solid fa-play"></i> Watch Trailer
@@ -220,7 +220,7 @@
                                                                 data-rating="<?= htmlspecialchars($movie['rating_code']) ?>"
                                                                 data-meta="<?= htmlspecialchars(formatMovieMeta($movie)) ?>"
                                                                 data-description="<?= htmlspecialchars($movie['description']) ?>"
-                                                                data-poster="<?= htmlspecialchars($movie['image_url'] ?: '../assets/images/placeholders/movie-poster.jpg') ?>"
+                                                                data-poster="<?= url('/app/' . $movie['image_url']); ?>"
                                                             >
                                                                 Buy Ticket
                                                             </a>
