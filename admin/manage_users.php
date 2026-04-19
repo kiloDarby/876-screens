@@ -13,6 +13,8 @@
 
     $pageTitle = '876 Screens - Manage Users';
     $activePage = 'manage_users';
+
+    //echo '<pre>'; var_dump($users); exit;
 ?>
 
 <!DOCTYPE html>

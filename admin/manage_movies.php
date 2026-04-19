@@ -89,7 +89,7 @@
                                 <div class="movie-cell">
                                   <div class="movie-thumb">
                                     <img
-                                      src="<?= url('/app/' . $movie['image_url']); ?>"
+                                      src="<?= url($movie['image_url']); ?>"
                                       alt="Poster for <?php echo htmlspecialchars($movie['title']); ?>"
                                     >
                                   </div>

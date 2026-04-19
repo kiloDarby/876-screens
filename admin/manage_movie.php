@@ -67,7 +67,7 @@
                           <label for="moviePoster" class="poster-upload-box <?= $hasPoster ? 'has-poster' : ''; ?>">
                             <?php if ($hasPoster): ?>
                               <img
-                                src="<?= url('/app/' . $currentPoster); ?>"
+                                src="<?= url($currentPoster); ?>"
                                 alt="Current poster for <?= htmlspecialchars($formMovie['title'] ?? 'movie'); ?>"
                                 class="poster-preview-image"
                               >

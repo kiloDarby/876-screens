@@ -7,7 +7,7 @@
                 <?php foreach ($featuredMovies as $movie): ?>
                     <article class="movie-slide">
                         <img
-                            src="<?= url('/app/' . $movie['image_url']); ?>"
+                            src="<?= url($movie['image_url']); ?>"
                             alt="<?= htmlspecialchars($movie['title']) ?>"
                         >
 
@@ -42,7 +42,7 @@
                                         data-rating="<?= htmlspecialchars($movie['rating_code']) ?>"
                                         data-meta="<?= htmlspecialchars(formatMovieMeta($movie)) ?>"
                                         data-description="<?= htmlspecialchars($movie['description']) ?>"
-                                        data-poster="<?= url('/app/' . $movie['image_url']); ?>"
+                                        data-poster="<?= url($movie['image_url']); ?>"
                                     >
                                         Buy Ticket
                                     </a>
@@ -57,7 +57,7 @@
                 <?php endforeach; ?>
             <?php else: ?>
                 <article class="movie-slide">
-                    <img src="../assets/images/hero-banner.jpg" alt="876 Screens">
+                    <img src="<?= url('/assets/images/hero-banner.jpg'); ?>" alt="876 Screens">
                     <div class="movie-overlay">
                         <p class="movie-tag">Welcome to 876 Screens</p>
                         <h1 class="movie-title">Book Your Next Movie Night</h1>

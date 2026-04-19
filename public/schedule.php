@@ -169,7 +169,7 @@
                                                     <img
                                                         width="248"
                                                         height="380"
-                                                        src="<?= url('/app/' . $movie['image_url']); ?>"
+                                                        src="<?= url($item['image_url']); ?>"
                                                         alt="<?= htmlspecialchars($item['title']); ?> poster"
                                                     >
                                                 </div>
@@ -220,7 +220,7 @@
                                                                 data-rating="<?= htmlspecialchars($movie['rating_code']) ?>"
                                                                 data-meta="<?= htmlspecialchars(formatMovieMeta($movie)) ?>"
                                                                 data-description="<?= htmlspecialchars($movie['description']) ?>"
-                                                                data-poster="<?= url('/app/' . $movie['image_url']); ?>"
+                                                                data-poster="<?= url($item['image_url']); ?>"
                                                             >
                                                                 Buy Ticket
                                                             </a>

@@ -412,7 +412,7 @@ function uploadProfileAvatar($file, $userId) {
     $extension = $allowedTypes[$mimeType];
     $fileName = 'user-' . $userId . '-' . time() . '.' . $extension;
 
-    $uploadFolder = __DIR__ . '/../uploads/avatars/';
+    $uploadFolder = __DIR__ . '/../../uploads/avatars/';
     $relativePath = 'uploads/avatars/' . $fileName;
     $destination = $uploadFolder . $fileName;
 
