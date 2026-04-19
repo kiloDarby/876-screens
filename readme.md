@@ -161,7 +161,7 @@ The system includes three main roles:
 
 ### 1. Clone the Repository
 
-git clone https://github.com/kiloDarby/876-screens.git
+git clone https://github.com/yourusername/876-screens.git
 
 
 ### 2. Move to Local Server
@@ -189,6 +189,21 @@ Open in browser: http://localhost/876-screens/public/
 
 
 ---
+
+### 🔐 Initial Admin Setup
+
+On the first run of the system, a default administrator account is available to allow access to the admin dashboard:
+
+Username: admin@mail.com
+Password: admin101
+
+### ⚠️ Important:
+For security reasons, it is strongly recommended to log in immediately and change this password to a more secure one after first access.
+
+### Failure to update the default credentials may expose the system to unauthorized access.
+
+---
+
 
 ## 🧠 Key Design Decisions
 
