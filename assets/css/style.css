@@ -581,6 +581,7 @@ a.btn {
 .now-showing {
   grid-area: now-showing;
   padding: 1.5rem;
+  min-height: 30rem;
 }
 
 .coming-soon {

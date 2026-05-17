@@ -178,10 +178,23 @@ function handleSaveMovie($pdo, $cinemas) {
                 $movieId
             ]);
 
-            // Delete old showtimes so the new list can replace them
+            // // Delete old showtimes so the new list can replace them
+            // $deleteShowtimesStmt = $pdo->prepare("
+            //     DELETE FROM showtime
+            //     WHERE movie_id = ?
+            // ");
+            // $deleteShowtimesStmt->execute([$movieId]);
+
+            // Delete only showtimes that do NOT have ticket data
             $deleteShowtimesStmt = $pdo->prepare("
-                DELETE FROM showtime
-                WHERE movie_id = ?
+                DELETE s
+                FROM showtime s
+                WHERE s.movie_id = ?
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM ticket t
+                    WHERE t.showtime_id = s.showtime_id
+                )
             ");
             $deleteShowtimesStmt->execute([$movieId]);
 
@@ -263,6 +276,9 @@ function handleSaveMovie($pdo, $cinemas) {
         if ($isEditMode) {
             $redirectUrl .= '?id=' . $movieId;
         }
+        // echo "<pre>";
+        // var_dump($e);
+        // echo "</pre>";
         header('Location: ' . url($redirectUrl));
         exit;
     }
@@ -301,20 +317,23 @@ function handleDeleteMovie($pdo) {
             exit;
         }
 
-        // Prevent delete if tickets exist for any showtime of this movie
+        // Prevent delete if tickets where ever booked for this movie
         $ticketStmt = $pdo->prepare("
-            SELECT COUNT(*)
+            SELECT 1
             FROM ticket t
             INNER JOIN showtime s
                 ON s.showtime_id = t.showtime_id
             WHERE s.movie_id = ?
-            AND (
-                    s.show_date > CURDATE()
-                OR (s.show_date = CURDATE() AND s.start_time >= CURTIME())
-            )
+            LIMIT 1
         ");
         $ticketStmt->execute([$movieId]);
         $ticketCount = (int) $ticketStmt->fetchColumn();
+        //$ticketCount = 0; //TODO: DELETE!!!!!!!!
+
+        // echo "<pre>";
+        // var_dump($ticketCount);
+        // echo "</pre>";
+        // exit;
 
         if ($ticketCount > 0) {
             $_SESSION['errors'] = [
@@ -325,22 +344,27 @@ function handleDeleteMovie($pdo) {
         }
 
         // Prevent delete if showtimes exist
-        $stmt = $pdo->prepare("
-            SELECT COUNT(*) 
-            FROM showtime 
-            WHERE movie_id = ?
-        ");
-        $stmt->execute([$movieId]);
+        // $stmt = $pdo->prepare("
+        //     SELECT COUNT(*) 
+        //     FROM showtime 
+        //     WHERE movie_id = ?
+        // ");
+        // $stmt->execute([$movieId]);
 
-        $showtimeCount = (int) $stmt->fetchColumn();
+        // $showtimeCount = (int) $stmt->fetchColumn();
 
-        if ($showtimeCount > 0) {
-            $_SESSION['errors'] = [
-                'This movie cannot be deleted because it still has scheduled showtimes.'
-            ];
-            header('Location: ' . url('/admin/manage_movies.php'));
-            exit;
-        }
+        // echo "<pre>";
+        // var_dump($showtimeCount);
+        // echo "</pre>";
+        // exit;
+
+        // if ($showtimeCount > 0) {
+        //     $_SESSION['errors'] = [
+        //         'This movie cannot be deleted because it still has scheduled showtimes.'
+        //     ];
+        //     header('Location: ' . url('/admin/manage_movies.php'));
+        //     exit;
+        // }
 
         // Delete movie
         $deleteStmt = $pdo->prepare("
@@ -611,7 +635,8 @@ function uploadMoviePoster($file, &$errors) {
     $extension = $allowedMimeTypes[$mimeType];
     $fileName = 'movie_' . time() . '_' . bin2hex(random_bytes(6)) . '.' . $extension;
 
-    $uploadDirectory = __DIR__ . '/../uploads/movie_posters/';
+    //$uploadDirectory = __DIR__ . '/../uploads/movie_posters/';
+    $uploadDirectory = __DIR__ . '/../../uploads/movie_posters/';
 
     if ( ! is_dir($uploadDirectory)) {
         mkdir($uploadDirectory, 0775, true);
